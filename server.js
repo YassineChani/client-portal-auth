@@ -6,12 +6,12 @@ const fs = require('fs');
 const app = express();
 const PORT = 5000;
 
-// Simple JSON file based database to avoid native compilation issues
-const DB_FILE = path.join(__dirname, 'database.json');
+// Simple JSON file based database compatible with Vercel serverless
+const DB_FILE = process.env.VERCEL ? path.join('/tmp', 'database.json') : path.join(__dirname, 'database.json');
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
     const initial = { users: [] };
-    fs.writeFileSync(DB_FILE, JSON.stringify(initial, null, 2));
+    try { fs.writeFileSync(DB_FILE, JSON.stringify(initial, null, 2)); } catch(e){}
     return initial;
   }
   try {
@@ -22,7 +22,11 @@ function loadDB() {
 }
 
 function saveDB(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch(e) {
+    console.error('Save DB error:', e);
+  }
 }
 
 // Middleware
@@ -122,7 +126,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  console.log(`Admin dashboard: http://localhost:${PORT}/admin`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Admin dashboard: http://localhost:${PORT}/admin`);
+  });
+}
+
+module.exports = app;
